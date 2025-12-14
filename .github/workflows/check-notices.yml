@@ -44,14 +44,13 @@ jobs:
       with:
         # Outlook SMTP 设置
         server_address: smtp.office365.com
-        server_port: 587
+        server_port: 465
         username: ${{ secrets.OUTLOOK_EMAIL }}
         password: ${{ secrets.OUTLOOK_PASSWORD }}
         subject: 网站通知更新提醒
         to: ${{ secrets.RECIPIENT_EMAIL }}
         from: ${{ secrets.OUTLOOK_SENDER_NAME }} <${{ secrets.OUTLOOK_EMAIL }}>
         secure: true
-        html: false
         body: |
           网站通知检查结果：
           
