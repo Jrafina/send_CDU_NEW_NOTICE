@@ -1,0 +1,59 @@
+name: Check Notices and Email
+
+on:
+  # 定时运行（每天9点和21点）
+  schedule:
+    - cron: '0 9,21 * * *'
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  check-notices:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install requests lxml
+        
+    - name: Create necessary directories
+      run: |
+        mkdir -p send_notice
+        
+    - name: Run notice script
+      id: run-script
+      run: |
+        # 运行脚本并捕获输出
+        output=$(python notice.py 2>&1)
+        echo "output<<EOF" >> $GITHUB_OUTPUT
+        echo "$output" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        
+    - name: Send email via Outlook
+      if: steps.run-script.outputs.output != '无变动'
+      uses: dawidd6/action-send-mail@v3
+      with:
+        # Outlook SMTP 设置
+        server_address: smtp.office365.com
+        server_port: 587
+        username: ${{ secrets.OUTLOOK_EMAIL }}
+        password: ${{ secrets.OUTLOOK_PASSWORD }}
+        subject: 网站通知更新提醒
+        to: ${{ secrets.RECIPIENT_EMAIL }}
+        from: ${{ secrets.OUTLOOK_SENDER_NAME }} <${{ secrets.OUTLOOK_EMAIL }}>
+        secure: true
+        html: false
+        body: |
+          网站通知检查结果：
+          
+          ${{ steps.run-script.outputs.output }}
+          ---
+          此邮件由 GitHub Actions 自动发送
