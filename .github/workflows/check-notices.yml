@@ -1,9 +1,12 @@
 name: Check Notices and Email
 
 on:
-  # 定时运行（每天9点和21点）
+  push:
+  branch:
+    -main
+  # 定时运行
   schedule:
-    - cron: '0 9,21 * * *'
+    - cron: '0 9 * * *'
   # 允许手动触发
   workflow_dispatch:
 
