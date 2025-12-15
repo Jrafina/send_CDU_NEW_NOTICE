@@ -1,13 +1,9 @@
 name: Check Notices and Email
 
 on:
-  push:
   schedule:
     - cron: '0 9 * * *'
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   check-notices:
@@ -25,6 +21,15 @@ jobs:
     - name: Install dependencies
       run: |
         pip install requests lxml
+        
+    # 使用缓存来保存之前的通知文件
+    - name: Cache notice file
+      uses: actions/cache@v3
+      with:
+        path: send_notice/notice.txt
+        key: notice-file-${{ github.run_id }}
+        restore-keys: |
+          notice-file-
         
     - name: Create necessary directories
       run: |
