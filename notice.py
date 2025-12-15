@@ -81,10 +81,11 @@ def main():
     new_notices = [notice_1, notice_2]
     
     # 文件路径
-    file_path = "notice.py.txt"#同目录下的txt文件
+    file_path = "send_notice\notice.txt"#同目录下的txt文件
     
     # 获取变化并更新
     get_changes_and_update(new_notices, file_path)
 
 if __name__ == "__main__":
+
     main()
