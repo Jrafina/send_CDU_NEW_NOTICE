@@ -100,9 +100,9 @@ def main():
     r_notice.encoding = r_notice.apparent_encoding
     
     html = etree.HTML(r_notice.text)
-    notice_1_ = html.xpath('//div[@class="s1-r"]//li/a/h3/text()')[1].strip()
+    notice_1_ = html.xpath('//div[@class="s1-r"]//li/a/h3/text()')[3].strip()
     notice_2_ = html.xpath('//div[@class="s1-r"]//li/a/h3/text()')[2].strip()
-    url_1 = html.xpath('//div[@class="s1-r"]//li/a/@href')[1].strip()
+    url_1 = html.xpath('//div[@class="s1-r"]//li/a/@href')[3].strip()
     url_1_ = "https://jw.cdu.edu.cn/" + url_1
     url_2 = html.xpath('//div[@class="s1-r"]//li/a/@href')[2].strip()
     url_2_ = "https://jw.cdu.edu.cn/" + url_2
@@ -120,3 +120,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
