@@ -1,5 +1,6 @@
 import requests
 from lxml import etree
+import os
 
 def read_existing_notices(file_path):
     """读取已存在的通知内容"""
@@ -14,6 +15,9 @@ def read_existing_notices(file_path):
 
 def write_notices(file_path, notices):
     """将通知写入文件"""
+    # 确保目录存在
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(notices))
 
@@ -80,12 +84,11 @@ def main():
     # 构建新通知列表
     new_notices = [notice_1, notice_2]
     
-    # 文件路径
-    file_path = "send_notice\notice.txt"#同目录下的txt文件
+    # 文件路径 - 使用跨平台兼容的路径
+    file_path = os.path.join("send_notice", "notice.txt")
     
     # 获取变化并更新
     get_changes_and_update(new_notices, file_path)
 
 if __name__ == "__main__":
-
     main()
